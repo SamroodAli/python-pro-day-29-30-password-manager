@@ -1,16 +1,20 @@
 """Password Manager Main file"""
 from tkinter import *
+# pyperclip helps to put out password into our clipboard so we can easily paste it elsewhere
+import pyperclip
 # Import message box from tkinter as line 2 * doesnt import message box which is a seperate module of code
 from tkinter import messagebox
 # password generator
 from password_generator import password_generator
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 
 def get_password():
     # Generate new password from password generator
     password = password_generator()
-
+    #copying password to our clipboard
+    pyperclip.copy(password)
     # clear password entry widget
     password_entry.delete(0, END)
     # entering new password to password entry widget
@@ -23,7 +27,6 @@ def save_password():
     email = email_entry.get()
     password = password_entry.get()
     # Dialog to user to make sure password is correct
-
     if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops",message="Please make sure you have not left any fields empty")
     else:
@@ -31,6 +34,8 @@ def save_password():
                                                                         f"Email: {email}"
                                                                         f"\nPassword: {password}\nIs it okay to save")
         if is_ok:
+            # copying password to our clipboard
+            pyperclip.copy(password)
             with open("data.txt", mode="a") as password_file:
                 # saving password to the data.txt file
                 password_file.write(f"{website} | {email} | {password}\n")
