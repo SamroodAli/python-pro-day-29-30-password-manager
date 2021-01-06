@@ -1,2 +1,1 @@
-website,example@email.com,password1
-website2,example2@gmail.com,password2
+website1 | example@email.com | password1

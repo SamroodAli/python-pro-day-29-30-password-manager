@@ -1,22 +1,31 @@
 """Password Manager Main file"""
-
-# ---------------------------- IMPORTS------------------------------- #
 from tkinter import *
+# Import message box from tkinter as line 2 * doesnt import message box which is a seperate module of code
+from tkinter import messagebox
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
-    with open("data.txt", mode="a") as password_file:
-        website = website_entry.get()
-        website_entry.delete(0, END)
-        email = email_entry.get()
-        password = password_entry.get()
-        password_entry.delete(0, END)
-        password_file.write(f"{website} | {email} | {password}\n")
+    # getting user entry data
+    website = website_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+    # Dialog to user to make sure password is correct
+    is_ok = messagebox.askokcancel(title="Confirm entries", message=f"These are the details you entered\nEmail: {email}"
+                                                                    f"\nPassword: {password}\nIs it okay to save")
+
+    if is_ok:
+        with open("data.txt", mode="a") as password_file:
+            # saving password to the data.txt file
+            password_file.write(f"{website} | {email} | {password}\n")
+            # clearing entries after saving
+            website_entry.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
+# New tkinter Window
 window = Tk()
 window.title("Password Manager")
 window.config(padx=20, pady=20)
