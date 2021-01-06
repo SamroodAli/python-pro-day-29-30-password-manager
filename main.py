@@ -12,16 +12,20 @@ def save_password():
     email = email_entry.get()
     password = password_entry.get()
     # Dialog to user to make sure password is correct
-    is_ok = messagebox.askokcancel(title="Confirm entries", message=f"These are the details you entered\nEmail: {email}"
-                                                                    f"\nPassword: {password}\nIs it okay to save")
 
-    if is_ok:
-        with open("data.txt", mode="a") as password_file:
-            # saving password to the data.txt file
-            password_file.write(f"{website} | {email} | {password}\n")
-            # clearing entries after saving
-            website_entry.delete(0, END)
-            password_entry.delete(0, END)
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Oops",message="Please make sure you have not left any fields empty")
+    else:
+        is_ok = messagebox.askokcancel(title="Confirm entries", message=f"These are the details you entered\n"
+                                                                        f"Email: {email}"
+                                                                        f"\nPassword: {password}\nIs it okay to save")
+        if is_ok:
+            with open("data.txt", mode="a") as password_file:
+                # saving password to the data.txt file
+                password_file.write(f"{website} | {email} | {password}\n")
+                # clearing entries after saving
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
