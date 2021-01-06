@@ -33,18 +33,18 @@ password_label = Label(text="Password")
 password_label.grid(column=0, row=3)
 window.grid_columnconfigure(1, weight=1)
 # Entry widgets
-website_entry = Entry(width=35)
+website_entry = Entry(width=38)
 website_entry.insert(END, string="")
 website_entry.grid(column=1, row=1, columnspan=2)
 
 
-email_entry = Entry()
+email_entry = Entry(width=38)
 email_entry.insert(END, string="")
-email_entry.grid(column=1, row=2)
+email_entry.grid(column=1, row=2, columnspan=2)
 
-password_entry = Entry(width=21)
+password_entry = Entry(width=38)
 password_entry.insert(END, string="")
-password_entry.grid(column=1, row=3)
+password_entry.grid(column=1, row=3, columnspan=2)
 
 # buttons
 generate_button = Button(text="Generate Password")
