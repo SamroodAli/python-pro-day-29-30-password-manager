@@ -36,11 +36,14 @@ window.grid_columnconfigure(1, weight=1)
 website_entry = Entry(width=38)
 website_entry.insert(END, string="")
 website_entry.grid(column=1, row=1, columnspan=2)
-
+# starting cursor focus
+website_entry.focus()
 
 email_entry = Entry(width=38)
 email_entry.insert(END, string="")
 email_entry.grid(column=1, row=2, columnspan=2)
+# set default email
+email_entry.insert(0, "example@email.com")
 
 password_entry = Entry(width=38)
 password_entry.insert(END, string="")
