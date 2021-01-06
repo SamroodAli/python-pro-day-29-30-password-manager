@@ -2,8 +2,19 @@
 from tkinter import *
 # Import message box from tkinter as line 2 * doesnt import message box which is a seperate module of code
 from tkinter import messagebox
+# password generator
+from password_generator import password_generator
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
+
+def get_password():
+    # Generate new password from password generator
+    password = password_generator()
+
+    # clear password entry widget
+    password_entry.delete(0, END)
+    # entering new password to password entry widget
+    password_entry.insert(END, password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
@@ -73,7 +84,7 @@ password_entry.insert(END, string="")
 password_entry.grid(column=1, row=3, columnspan=2)
 
 # buttons
-generate_button = Button(text="Generate Password")
+generate_button = Button(text="Generate Password", command=get_password)
 generate_button.grid(column=2, row=3)
 
 add_button = Button(text="Add", width=36, command=save_password)
