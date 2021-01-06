@@ -9,9 +9,13 @@ from tkinter import *
 def save_password():
     with open("data.txt", mode="a") as password_file:
         website = website_entry.get()
+        website_entry.delete(0, END)
         email = email_entry.get()
+        email_entry.delete(0, END)
         password = password_entry.get()
-        password_file.write(f"{website},{email},{password}")
+        password_entry.delete(0, END)
+        password_file.write(f"{website},{email},{password}\n")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
