@@ -11,10 +11,9 @@ def save_password():
         website = website_entry.get()
         website_entry.delete(0, END)
         email = email_entry.get()
-        email_entry.delete(0, END)
         password = password_entry.get()
         password_entry.delete(0, END)
-        password_file.write(f"{website},{email},{password}\n")
+        password_file.write(f"{website} | {email} | {password}\n")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
