@@ -96,19 +96,19 @@ def search_password():
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             messagebox.showinfo(title="No passwords saved", message="Sorry, you have not saved any password before")
         else:
-            try:
+            if website in password_data:
                 email = password_data[website]["Email"]
                 password = password_data[website]["Password"]
-            except KeyError:
-                messagebox.showinfo(title="Password not saved for this website", message=f"The password for {website}\n"
-                                                                                         f"has not been saved")
-            else:
                 is_clipboard = messagebox.askokcancel(title=website, message=f"Email: {email}\nPassword: {password}"
                                                                              f"\n\nSave to clipboard ?")
                 if is_clipboard:
                     # saving password to clipboard
                     pyperclip.copy(password)
                     messagebox.showinfo(title="Saved to clipboard", message="Password has been saved to clipboard")
+            else:
+                messagebox.showinfo(title="Password not saved for this website", message=f"The password for {website}\n"
+                                                                                         f"has not been saved")
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
