@@ -4,6 +4,8 @@ from tkinter import *
 import pyperclip
 # Import message box from tkinter as line 2 * doesnt import message box which is a seperate module of code
 from tkinter import messagebox
+# Passwords are going to be saved in a json file
+import json
 # password generator
 from password_generator import password_generator
 
@@ -19,6 +21,7 @@ def get_password():
     password_entry.delete(0, END)
     # entering new password to password entry widget
     password_entry.insert(END, password)
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
@@ -36,9 +39,18 @@ def save_password():
         if is_ok:
             # copying password to our clipboard
             pyperclip.copy(password)
-            with open("data.txt", mode="a") as password_file:
-                # saving password to the data.txt file
-                password_file.write(f"{website} | {email} | {password}\n")
+            # opening password file and saving new entry
+            with open("data.json", mode="a") as password_file:
+                # new user data to be entered into password file as json
+                new_json_data = {
+                    website:
+                        {
+                            email: email,
+                            password: password
+                        }
+                }
+                # saving password to the data.json file
+                json.dump(new_json_data, password_file, indent=4)
                 # clearing entries after saving
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
