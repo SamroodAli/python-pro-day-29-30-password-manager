@@ -64,7 +64,7 @@ def save_password():
     else:
         is_ok = messagebox.askokcancel(title="Confirm entries", message=f"These are the details you entered\n"
                                                                         f"Email: {email}"
-                                                                        f"\nPassword: {password}\nIs it okay to save")
+                                                                        f"\nPassword: {password}\nIs it okay to save ?")
         if is_ok:
             # copying password to our clipboard
             pyperclip.copy(password)
@@ -103,7 +103,12 @@ def search_password():
                 messagebox.showinfo(title="Password not saved for this website", message=f"The password for {website}\n"
                                                                                          f"has not been saved")
             else:
-                messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+                is_clipboard = messagebox.askokcancel(title=website, message=f"Email: {email}\nPassword: {password}"
+                                                                             f"\n\nSave to clipboard ?")
+                if is_clipboard:
+                    # saving password to clipboard
+                    pyperclip.copy(password)
+                    messagebox.showinfo(title="Saved to clipboard", message="Password has been saved to clipboard")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
