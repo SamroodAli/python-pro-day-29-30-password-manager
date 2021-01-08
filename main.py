@@ -24,6 +24,29 @@ def get_password():
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+def database_manager(new_user_entry):
+    try:
+        # seeing if there is any old passwords data file
+        with open("data.json", mode="r") as old_password_file:
+            # reading old password data
+            password_data = json.load(old_password_file)
+    # if there is no file or if there is a file but no entries in it:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
+        with open("data.json", mode="w") as new_password_file:
+            json.dump(new_user_entry, new_password_file, indent=4)
+    # if there is old password data,
+    else:
+        #  New user entry json data will be updated to the old passwords data
+        password_data.update(new_user_entry)
+        # Writing either the updated password data or the new user entry json data in current_password_data
+        with open("data.json", mode="w") as old_password_file:
+            json.dump(password_data, old_password_file, indent=4)
+    finally:
+        # finally , we are clearing website and password entry fields
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
+
+
 def save_password():
     # getting user entry data
     website = website_entry.get()
@@ -40,33 +63,15 @@ def save_password():
             # copying password to our clipboard
             pyperclip.copy(password)
             # new user data to be entered into current password data file as json
-            new_entry_json_data = {
+            new_entry_in_json = {
                 website:
                     {
                         email: email,
                         password: password
                     }
             }
-            try:
-                # seeing if there is any old passwords data file
-                with open("data.json", mode="r") as old_password_file:
-                    # reading old password data
-                    password_data = json.load(old_password_file)
-            # if there is no file or if there is a file but no entries in it:
-            except (FileNotFoundError, json.decoder.JSONDecodeError):
-                with open("data.json", mode="w") as new_password_file:
-                    json.dump(new_entry_json_data, new_password_file, indent= 4)
-            # if there is old password data,
-            else:
-                #  New user entry json data will be updated to the old passwords data
-                password_data.update(new_entry_json_data)
-                # Writing either the updated password data or the new user entry json data in current_password_data
-                with open("data.json", mode="w") as old_password_file:
-                    json.dump(password_data, old_password_file, indent=4)
-            finally:
-                # finally , we are clearing website and password entry fields
-                website_entry.delete(0, END)
-                password_entry.delete(0, END)
+            # Writing to the password database or updating it
+            database_manager(new_entry_in_json)
 # ---------------------------- UI SETUP ------------------------------- #
 # New tkinter Window
 window = Tk()
