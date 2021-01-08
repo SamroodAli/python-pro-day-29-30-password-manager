@@ -72,12 +72,38 @@ def save_password():
             new_entry_in_json = {
                 website:
                     {
-                        email: email,
-                        password: password
+                        "Email": email,
+                        "Password": password
                     }
             }
             # Writing to the password database or updating it
             database_manager(new_entry_in_json)
+
+
+# ---------------------------- SAVE PASSWORD ------------------------------- #
+def search_password():
+    # Getting user website entry
+    website = website_entry.get()
+    # Get password data
+    if len(website) == 0:
+        messagebox.showinfo(title="Oops", message="Please enter a website to search")
+    else:
+        try:
+            # seeing if there is any old passwords data file
+            with open("data.json", mode="r") as old_password_file:
+                # reading old password data
+                password_data = json.load(old_password_file)
+        except (FileNotFoundError, json.decoder.JSONDecodeError):
+            messagebox.showinfo(title="No passwords saved", message="Sorry, you have not saved any password before")
+        else:
+            try:
+                email = password_data[website]["Email"]
+                password = password_data[website]["Password"]
+            except KeyError:
+                messagebox.showinfo(title="Password not saved for this website", message=f"The password for {website}\n"
+                                                                                         f"has not been saved")
+            else:
+                messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -124,7 +150,7 @@ password_entry.insert(END, string="")
 password_entry.grid(column=1, row=3)
 
 # buttons
-search_button = Button(text="Search", command=get_password, padx=95, font=FONT)
+search_button = Button(text="Search", padx=95, font=FONT, command=search_password)
 search_button.grid(column=3, row=1)
 
 generate_button = Button(text="Generate Password", command=get_password, font=FONT)
