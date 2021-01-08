@@ -15,7 +15,7 @@ from password_generator import password_generator
 def get_password():
     # Generate new password from password generator
     password = password_generator()
-    #copying password to our clipboard
+    # Copying password to our clipboard
     pyperclip.copy(password)
     # clear password entry widget
     password_entry.delete(0, END)
@@ -31,7 +31,7 @@ def save_password():
     password = password_entry.get()
     # Dialog to user to make sure password is correct
     if len(website) == 0 or len(password) == 0:
-        messagebox.showinfo(title="Oops",message="Please make sure you have not left any fields empty")
+        messagebox.showinfo(title="Oops", message="Please make sure you have not left any fields empty")
     else:
         is_ok = messagebox.askokcancel(title="Confirm entries", message=f"These are the details you entered\n"
                                                                         f"Email: {email}"
@@ -39,23 +39,34 @@ def save_password():
         if is_ok:
             # copying password to our clipboard
             pyperclip.copy(password)
-            # opening password file and saving new entry
-            with open("data.json", mode="a") as password_file:
-                # new user data to be entered into password file as json
-                new_json_data = {
-                    website:
-                        {
-                            email: email,
-                            password: password
-                        }
-                }
-                # saving password to the data.json file
-                json.dump(new_json_data, password_file, indent=4)
-                # clearing entries after saving
+            # new user data to be entered into current password data file as json
+            new_entry_json_data = {
+                website:
+                    {
+                        email: email,
+                        password: password
+                    }
+            }
+            try:
+                # seeing if there is any old passwords data file
+                with open("data.json", mode="r") as old_password_file:
+                    # reading old password data
+                    password_data = json.load(old_password_file)
+            # if there is no file or if there is a file but no entries in it:
+            except (FileNotFoundError, json.decoder.JSONDecodeError):
+                with open("data.json", mode="w") as new_password_file:
+                    json.dump(new_entry_json_data, new_password_file, indent= 4)
+            # if there is old password data,
+            else:
+                #  New user entry json data will be updated to the old passwords data
+                password_data.update(new_entry_json_data)
+                # Writing either the updated password data or the new user entry json data in current_password_data
+                with open("data.json", mode="w") as old_password_file:
+                    json.dump(password_data, old_password_file, indent=4)
+            finally:
+                # finally , we are clearing website and password entry fields
                 website_entry.delete(0, END)
                 password_entry.delete(0, END)
-
-
 # ---------------------------- UI SETUP ------------------------------- #
 # New tkinter Window
 window = Tk()
