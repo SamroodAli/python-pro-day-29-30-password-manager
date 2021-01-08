@@ -88,27 +88,32 @@ def search_password():
     if len(website) == 0:
         messagebox.showinfo(title="Oops", message="Please enter a website to search")
     else:
+        # Try to see if password files exit ,is in JSON, and not blank
         try:
             # seeing if there is any old passwords data file
             with open("data.json", mode="r") as old_password_file:
                 # reading old password data
                 password_data = json.load(old_password_file)
+        # If there is no password file, or is in incorrect JSON format or is blank
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             messagebox.showinfo(title="No passwords saved", message="Sorry, you have not saved any password before")
         else:
+            # If the searched website is in password data
             if website in password_data:
                 email = password_data[website]["Email"]
                 password = password_data[website]["Password"]
+                # Save to clipboard message box
                 is_clipboard = messagebox.askokcancel(title=website, message=f"Email: {email}\nPassword: {password}"
                                                                              f"\n\nSave to clipboard ?")
+                # Save to clipboard
                 if is_clipboard:
                     # saving password to clipboard
                     pyperclip.copy(password)
                     messagebox.showinfo(title="Saved to clipboard", message="Password has been saved to clipboard")
+            # IF the searched website is not in the database
             else:
                 messagebox.showinfo(title="Password not saved for this website", message=f"The password for {website}\n"
                                                                                          f"has not been saved")
-
 
 
 # ---------------------------- UI SETUP ------------------------------- #
